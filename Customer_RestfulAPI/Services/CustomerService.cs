@@ -11,11 +11,11 @@ namespace Customer_RestfulAPI.Services
 
         public Customer? Get(int id) => _customer.FirstOrDefault(c => c.Id == id);
 
-        public bool Add(Customer customer)
+        public Customer Add(Customer customer)
         {
             customer.Id = _id++;
             _customer.Add(customer);
-            return true;
+            return customer;
         }
 
         public bool Delete(int id) 

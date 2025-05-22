@@ -24,7 +24,8 @@ namespace Customer_RestfulAPI.Controllers
         [HttpPost]
         public ActionResult<Customer> Create(Customer customer)
         {
-
+            var addedCustomer = _customer.Add(customer);
+            return CreatedAtAction(nameof(Get), new { id = addedCustomer.Id }, addedCustomer);
         }
     }
 }
