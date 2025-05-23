@@ -27,5 +27,17 @@ namespace Customer_RestfulAPI.Controllers
             var addedCustomer = _customer.Add(customer);
             return CreatedAtAction(nameof(Get), new { id = addedCustomer.Id }, addedCustomer);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id,Customer customer)
+        {
+            return _customer.Update(id, customer) ? NoContent() : NotFound();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete (int id)
+        {
+            return _customer.Delete(id) ? NoContent() : NotFound();
+        }
     }
 }
