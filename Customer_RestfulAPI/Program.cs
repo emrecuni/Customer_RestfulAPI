@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<CustomerService>();
+builder.Services.AddSingleton<PolicyService>();
 
 var app = builder.Build();
 
