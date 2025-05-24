@@ -1,6 +1,7 @@
 ﻿using Customer_RestfulAPI.Models;
 using Customer_RestfulAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Customer_RestfulAPI.Controllers
 {
@@ -27,22 +28,22 @@ namespace Customer_RestfulAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Policy> Create(Policy policy)
+        public async Task<ActionResult<Policy>> Create(Policy policy)
         {
-            var addedPolicy = _policy.Add(policy);
+            var addedPolicy = await _policy.Add(policy);
             return CreatedAtAction(nameof(Get), new { id = addedPolicy.Id }, addedPolicy);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Policy policy)
+        public async Task<IActionResult> Update(int id, Policy policy)
         {
-            return _policy.Update(id, policy) ? NoContent() : NotFound();
+            return await _policy.Update(id, policy) ? NoContent() : NotFound();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return _policy.Delete(id) ? NoContent() : NotFound();
+            return await _policy.Delete(id) ? NoContent() : NotFound();
         }
     }
 }
