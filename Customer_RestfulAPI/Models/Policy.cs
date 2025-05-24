@@ -1,7 +1,11 @@
-﻿namespace Customer_RestfulAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Customer_RestfulAPI.Models
 {
     public class Policy
     {
+        [Key]
         public int Id { get; set; }
         public string? PolicyNo { get; set; }
         public int ProductNo { get; set; }

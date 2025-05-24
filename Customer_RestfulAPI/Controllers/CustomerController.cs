@@ -1,6 +1,7 @@
 ﻿using Customer_RestfulAPI.Models;
 using Customer_RestfulAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Customer_RestfulAPI.Controllers
 {
@@ -22,22 +23,22 @@ namespace Customer_RestfulAPI.Controllers
         public ActionResult<Customer?> Get(int id ) => _customer.Get(id);
 
         [HttpPost]
-        public ActionResult<Customer> Create(Customer customer)
+        public async Task<ActionResult<Customer>> Create(Customer customer)
         {
-            var addedCustomer = _customer.Add(customer);
+            var addedCustomer = await _customer.Add(customer);
             return CreatedAtAction(nameof(Get), new { id = addedCustomer.Id }, addedCustomer);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id,Customer customer)
+        public async Task<IActionResult> Update(int id,Customer customer)
         {
-            return _customer.Update(id, customer) ? NoContent() : NotFound();
+            return await _customer.Update(id, customer) ? NoContent() : NotFound();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete (int id)
+        public async Task<IActionResult> Delete (int id)
         {
-            return _customer.Delete(id) ? NoContent() : NotFound();
+            return await _customer.Delete(id) ? NoContent() : NotFound();
         }
     }
 }

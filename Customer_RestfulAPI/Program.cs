@@ -1,4 +1,7 @@
+using Customer_RestfulAPI.Models;
 using Customer_RestfulAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +11,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<CustomerService>();
-builder.Services.AddSingleton<PolicyService>();
+builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<PolicyService>();
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

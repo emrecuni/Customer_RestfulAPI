@@ -1,35 +1,41 @@
 ﻿using Customer_RestfulAPI.Models;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Customer_RestfulAPI.Services
 {
     public class CustomerService
     {
-        private readonly List<Customer> _customer = new();
-        private int _id = 1;
+        private readonly DataContext _context;
 
-        public List<Customer> GetAll() => _customer;
-
-        public Customer? Get(int id) => _customer.FirstOrDefault(c => c.Id == id);
-
-        public Customer Add(Customer customer)
+        public CustomerService(DataContext context)
         {
-            customer.Id = _id++;
-            _customer.Add(customer);
+            _context = context;
+        }
+
+        public List<Customer> GetAll() => _context.Customers.ToList();
+
+        public Customer? Get(int id) => _context.Customers.FirstOrDefault(c => c.Id == id);
+
+        public async Task<Customer> Add(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            await _context.SaveChangesAsync();
             return customer;
         }
 
-        public bool Delete(int id) 
+        public async Task<bool> Delete(int id) 
         {
-            if(!_customer.Any(c => c.Id == id))
+            if(!_context.Customers.Any(c => c.Id == id))
                 return false;
-            _customer.Remove(Get(id)!);
+            _context.Customers.Remove(Get(id)!);
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public bool Update(int id, Customer customer) 
+        public async Task<bool> Update(int id, Customer customer) 
         {
-            var willBeUpdatedCustomer = _customer.FirstOrDefault(c => c.Id == id);
+            var willBeUpdatedCustomer = _context.Customers.FirstOrDefault(c => c.Id == id);
             if (willBeUpdatedCustomer == null)
                 return false;
 
@@ -42,7 +48,8 @@ namespace Customer_RestfulAPI.Services
                     prop.SetValue(willBeUpdatedCustomer, newValue);
             }
 
-            willBeUpdatedCustomer.Id = id;
+            await _context.SaveChangesAsync();
+
             return true;
         }
     }
