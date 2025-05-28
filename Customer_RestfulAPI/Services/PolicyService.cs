@@ -18,17 +18,16 @@ namespace Customer_RestfulAPI.Services
 
         public async Task<Policy> Add(Policy policy)
         {
-            Policy tempPolicy = new();
-            tempPolicy.Id = policy.Id;
-            tempPolicy.PolicyNo = policy.PolicyNo;
-            tempPolicy.ProductNo = policy.ProductNo;
-            tempPolicy.Product = policy.Product;
-            tempPolicy.TransactionDate = policy.TransactionDate;
-            tempPolicy.StartDate = policy.StartDate;
-            tempPolicy.EndDate = policy.EndDate;
-            tempPolicy.Insurer = policy.Insurer;
+            //Policy tempPolicy = new();
+            //tempPolicy.PolicyNo = policy.PolicyNo;
+            //tempPolicy.ProductNo = policy.ProductNo;
+            //tempPolicy.Product = policy.Product;
+            //tempPolicy.TransactionDate = policy.TransactionDate;
+            //tempPolicy.StartDate = policy.StartDate;
+            //tempPolicy.EndDate = policy.EndDate;
+            //tempPolicy.Insurer = policy.Insurer;
 
-            _context.Policies.Add(tempPolicy);
+            _context.Policies.Add(policy);
 
             await _context.SaveChangesAsync();
             return policy;

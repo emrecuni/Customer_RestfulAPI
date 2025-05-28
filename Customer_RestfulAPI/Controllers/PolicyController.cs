@@ -45,5 +45,7 @@ namespace Customer_RestfulAPI.Controllers
         {
             return await _policy.Delete(id) ? NoContent() : NotFound();
         }
+
+        /*jwt ekle*/
     }
 }
