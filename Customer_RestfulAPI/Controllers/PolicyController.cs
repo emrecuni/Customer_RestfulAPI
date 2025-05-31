@@ -10,10 +10,12 @@ namespace Customer_RestfulAPI.Controllers
     public class PolicyController : ControllerBase
     {
         private readonly PolicyService _policy;
+        private readonly CustomerService _customer;
 
-        public PolicyController(PolicyService policyService)
+        public PolicyController(PolicyService policyService, CustomerService customerService)
         {
             _policy = policyService;
+            _customer = customerService;
         }
 
         [HttpGet]
@@ -30,13 +32,10 @@ namespace Customer_RestfulAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Policy>> Create(Policy policy)
         {
-            var tempPolicy = new Policy()
-            {
-                
-            };
             var addedPolicy = await _policy.Add(policy);
             return CreatedAtAction(nameof(Get), new { id = addedPolicy.Id }, addedPolicy);
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Policy policy)

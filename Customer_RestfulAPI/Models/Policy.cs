@@ -13,6 +13,9 @@ namespace Customer_RestfulAPI.Models
         public DateTime? TransactionDate { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public int? InsurerId { get; set; }
+
+        [ForeignKey("InsurerId")]
         public Customer? Insurer { get; set; }
         public List<Customer>? InsuredList { get; set; }
     }

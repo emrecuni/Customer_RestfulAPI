@@ -13,5 +13,7 @@ namespace Customer_RestfulAPI.Models
         public string? IdentityNo { get; set; }
         public string? Email { get; set; }
         public string? Address { get; set; }
+
+        public List<Policy>? PoliciesAsInsured { get; set; } // Many-to-many için
     }
 }
