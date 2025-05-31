@@ -30,6 +30,10 @@ namespace Customer_RestfulAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Policy>> Create(Policy policy)
         {
+            var tempPolicy = new Policy()
+            {
+                
+            };
             var addedPolicy = await _policy.Add(policy);
             return CreatedAtAction(nameof(Get), new { id = addedPolicy.Id }, addedPolicy);
         }
