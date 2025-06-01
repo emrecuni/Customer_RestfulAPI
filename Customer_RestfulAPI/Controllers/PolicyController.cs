@@ -23,7 +23,7 @@ namespace Customer_RestfulAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PolicyDto>>> GetAll()
         {
-            var temp =await _policy.GetAllAsync();
+            var temp = await _policy.GetAllAsync();
             return Ok(temp.Select(p => p.ToDto()));
         }
 
@@ -69,8 +69,32 @@ namespace Customer_RestfulAPI.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Policy policy)
+        public async Task<IActionResult> Update(int id, PolicyCreateDto dto)
         {
+            if (dto == null)
+                return BadRequest("Veri boş olamaz.");
+
+            var insurer = _customer.Get((int)dto.InsurerId);
+            if (insurer == null)
+                return NotFound("Sigorta ettiren (Insurer) bulunamadı.");
+
+            var insuredList = _customer.GetAll()
+                .Where(c => dto.InsuredCustomerIds != null && dto.InsuredCustomerIds.Contains(c.Id))
+                .ToList();
+
+
+            Policy policy = new Policy
+            {
+                PolicyNo = dto.PolicyNo,
+                ProductNo = dto.ProductNo,
+                Product = dto.Product,
+                TransactionDate = dto.TransactionDate,
+                StartDate = dto.StartDate,
+                EndDate = dto.EndDate,
+                Insurer = insurer,
+                InsuredList = insuredList
+            };
+
             return await _policy.Update(id, policy) ? NoContent() : NotFound();
         }
 

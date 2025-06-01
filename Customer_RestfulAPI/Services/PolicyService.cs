@@ -21,7 +21,12 @@ namespace Customer_RestfulAPI.Services
             .ToListAsync();
         }
 
-        public Policy? Get(int id) => _context.Policies.FirstOrDefault(p => p.Id == id);
+        public Policy? Get(int id) 
+        {
+
+
+           return _context.Policies.FirstOrDefault(p => p.Id == id);
+        }
 
         public async Task<Policy> Add(Policy? policy)
         {
@@ -94,7 +99,16 @@ namespace Customer_RestfulAPI.Services
             if (existPolicy == null)
                 return false;
 
-            var props = typeof(Policy).GetProperties();
+            if (policy.InsuredList != null)
+            {
+                existPolicy.InsuredList.Clear();
+                foreach (var insured in policy.InsuredList)
+                {
+                    existPolicy.InsuredList.Add(insured);
+                }
+            }
+
+            var props = typeof(Policy).GetProperties().Skip(1); // id değerini güncellememek için atlıyoruz
             foreach (var prop in props)
             {
                 var value = prop.GetValue(policy);
