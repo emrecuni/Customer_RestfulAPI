@@ -13,17 +13,17 @@ namespace Customer_RestfulAPI.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Many-to-many: Policy ↔ Customer (insured)
+            // Many-to-many ilişki
             modelBuilder.Entity<Policy>()
                 .HasMany(p => p.InsuredList)
                 .WithMany(c => c.PoliciesAsInsured)
-                .UsingEntity(j => j.ToTable("PolicyInsuredCustomers"));
+                .UsingEntity(j => j.ToTable("PolicyInsured"));
 
-            modelBuilder.Entity<Policy>()
-                .HasOne(p => p.Insurer)
-                .WithMany() // Customer → Policy için navigasyon tanımlamadık
-                .HasForeignKey(p => p.InsurerId)
-                .OnDelete(DeleteBehavior.Restrict); // circular dependency riskine karşı
+            // One-to-many ilişki
+            modelBuilder.Entity<Customer>()
+                .HasMany(c => c.PoliciesAsInsurer)
+                .WithOne(p => p.Insurer)
+                .HasForeignKey(p => p.InsurerId);
         }
     }
 }

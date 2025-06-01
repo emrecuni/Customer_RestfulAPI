@@ -15,5 +15,6 @@ namespace Customer_RestfulAPI.Models
         public string? Address { get; set; }
 
         public List<Policy>? PoliciesAsInsured { get; set; } // Many-to-many için
+        public List<Policy>? PoliciesAsInsurer { get; set; } // One-to-many
     }
 }

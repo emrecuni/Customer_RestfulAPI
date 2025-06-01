@@ -1,6 +1,8 @@
-﻿using Customer_RestfulAPI.Models;
+﻿using Customer_RestfulAPI.DTO;
+using Customer_RestfulAPI.Models;
 using Customer_RestfulAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace Customer_RestfulAPI.Controllers
@@ -19,10 +21,14 @@ namespace Customer_RestfulAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Policy>> GetAll() => _policy.GetAll();
+        public async Task<ActionResult<IEnumerable<PolicyDto>>> GetAll()
+        {
+            var temp =await _policy.GetAllAsync();
+            return Ok(temp.Select(p => p.ToDto()));
+        }
 
         [HttpGet("{id}")]
-        public ActionResult<Policy> Get(int id)
+        public ActionResult<PolicyDto> Get(int id)
         {
             var policy = _policy.Get(id);
 
@@ -30,10 +36,35 @@ namespace Customer_RestfulAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Policy>> Create(Policy policy)
+        public async Task<ActionResult<Policy>> Create([FromBody] PolicyCreateDto dto)
         {
+
+            if (dto == null)
+                return BadRequest("Veri boş olamaz.");
+
+            var insurer = _customer.Get((int)dto.InsurerId!);
+            if (insurer == null)
+                return NotFound("Sigorta ettiren (Insurer) bulunamadı.");
+
+            var insuredList = _customer.GetAll()
+                .Where(c => dto.InsuredCustomerIds != null && dto.InsuredCustomerIds.Contains(c.Id))
+                .ToList();
+
+            var policy = new Policy
+            {
+                PolicyNo = dto.PolicyNo,
+                ProductNo = dto.ProductNo,
+                Product = dto.Product,
+                TransactionDate = dto.TransactionDate,
+                StartDate = dto.StartDate,
+                EndDate = dto.EndDate,
+                Insurer = insurer,
+                InsuredList = insuredList
+            };
             var addedPolicy = await _policy.Add(policy);
-            return CreatedAtAction(nameof(Get), new { id = addedPolicy.Id }, addedPolicy);
+            var policyDto = addedPolicy.ToDto();
+
+            return CreatedAtAction(nameof(Get), new { id = addedPolicy.Id }, policyDto);
         }
 
 

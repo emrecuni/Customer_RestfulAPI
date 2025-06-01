@@ -13,7 +13,13 @@ namespace Customer_RestfulAPI.Services
             _context = context;
         }
 
-        public List<Policy> GetAll() => _context.Policies.ToList();
+        public async Task<List<Policy>> GetAllAsync()
+        {
+            return await _context.Policies
+            .Include(p => p.Insurer)
+            .Include(p => p.InsuredList)
+            .ToListAsync();
+        }
 
         public Policy? Get(int id) => _context.Policies.FirstOrDefault(p => p.Id == id);
 
