@@ -21,12 +21,12 @@ namespace Customer_RestfulAPI.Services
             .ToListAsync();
         }
 
-        public Policy? Get(int id) 
+        public Policy? Get(int id)
         {
             return _context.Policies
             .Include(p => p.Insurer)
             .Include(p => p.InsuredList)
-            .FirstOrDefault(p => p.Id == id); ;
+            .FirstOrDefault(p => p.Id == id);
         }
 
         public async Task<Policy> Add(Policy? policy)
@@ -102,10 +102,10 @@ namespace Customer_RestfulAPI.Services
 
             if (policy.InsuredList != null)
             {
-                existPolicy.InsuredList.Clear();
+                existPolicy?.InsuredList?.Clear();
                 foreach (var insured in policy.InsuredList)
                 {
-                    existPolicy.InsuredList.Add(insured);
+                    existPolicy?.InsuredList?.Add(insured);
                 }
             }
 
