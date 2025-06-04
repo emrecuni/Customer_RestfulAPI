@@ -23,15 +23,10 @@ namespace Customer_RestfulAPI.Services
 
         public Policy? Get(int id) 
         {
-            //var policy = _context.Policies.FirstOrDefault(p => p.Id == id);
-            //var insurer = _context.Customers.FirstOrDefault(c => c.Id == policy!.InsurerId);
-            //var insuredList = _context.Customers.Find(c => c.id == policy.in)
-            var policy =  _context.Policies
+            return _context.Policies
             .Include(p => p.Insurer)
             .Include(p => p.InsuredList)
-            .FirstOrDefault(p => p.Id == id);
-
-            return policy;
+            .FirstOrDefault(p => p.Id == id); ;
         }
 
         public async Task<Policy> Add(Policy? policy)

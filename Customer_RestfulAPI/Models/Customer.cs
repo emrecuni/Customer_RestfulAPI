@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Customer_RestfulAPI.Models
 {
@@ -14,7 +15,9 @@ namespace Customer_RestfulAPI.Models
         public string? Email { get; set; }
         public string? Address { get; set; }
 
+        [JsonIgnore]
         public List<Policy>? PoliciesAsInsured { get; set; } // Many-to-many için
+        [JsonIgnore]
         public List<Policy>? PoliciesAsInsurer { get; set; } // One-to-many
     }
 }
