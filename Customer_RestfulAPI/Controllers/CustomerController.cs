@@ -1,5 +1,6 @@
 ﻿using Customer_RestfulAPI.Models;
 using Customer_RestfulAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -40,5 +41,14 @@ namespace Customer_RestfulAPI.Controllers
         {
             return await _customer.Delete(id) ? NoContent() : NotFound();
         }
+
+        [Authorize]
+        [HttpGet("secret")]
+        public IActionResult TestToken()
+        {
+
+            return Ok("Jwt ile korunuyor.");
+        }
+
     }
 }
